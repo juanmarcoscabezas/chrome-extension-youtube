@@ -1,5 +1,3 @@
-const { info } = require('console');
-
 const server = require('http').createServer();
 const io = require('socket.io')(server);
 
