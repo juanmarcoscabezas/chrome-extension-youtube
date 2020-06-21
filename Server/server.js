@@ -13,32 +13,20 @@ const options = {
 	cert: fs.readFileSync(__dirname + '/security/cert.pem')
 };
 
-console.log(options)
+const server = https.createServer(options, app);
 
-const server = https.createServer(options, app)
-  .listen(3000, () => {
-    console.log('Running on port 3000');
-  });
+const io = require('socket.io')(server);
 
+io.on('connection', client => {
 
-// const server = require('http').createServer(app);
+	console.log('User connected');
+	client.on('message', data => {
+		console.log(data);
+		client.broadcast.emit('message', data);
+	});
+	client.on('disconnect', () => {console.log('Disconected')});
+});
 
-
-// const io = require('socket.io')(server);
-
-// io.on('connection', client => {
-
-//   console.log('User connected');
-
-//   client.on('message', data => {
-//     console.log(data);
-//     client.broadcast.emit('message', data);
-//   });
-
-//   client.on('disconnect', () => {console.log('Disconected')});
-// });
-
-// app.get('/', (req, res) => {
-// 	console.log('Entra');
-// 	return res.send('Holaa');
-// })
+server.listen(3000, () => {
+	console.log('Running on port 3000');
+});
