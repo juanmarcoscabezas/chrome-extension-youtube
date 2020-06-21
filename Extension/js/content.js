@@ -2,7 +2,7 @@ chrome.runtime.sendMessage({todo: "color"});
 chrome.runtime.sendMessage({todo: "activate_icon"});
 
 // Connect to socket
-const socket = io('http://localhost:3000');
+const socket = io('http://3.12.74.191:3000');
 
 // Creating chat container
 const chatContainer = document.createElement('div');
@@ -11,7 +11,7 @@ chatContainer.classList.add('style-scope');
 chatContainer.classList.add('ytd-watch-flexy');
 
 // Creating chat input
-const chatInput = document.createElement('input');
+const chatInput = document.createElement('textarea');
 chatInput.id = 'chat-input';
 
 // Creating chat button
@@ -27,28 +27,18 @@ document.querySelector('#columns').appendChild(chatContainer);
 
 const userData = {
   text: '',
-  img: ''
+  img: '',
+  date: ''
 }
 
 // EVENTS
 chatButton.onclick = function(element) {
-  const data = userData;
-  data.text = chatInput.value;
-  data.img = document.querySelector('#img').src;
-
-  socket.emit('message', data);
-  createMessage(data, true);
-  chatInput.value = '';
+  sendMessage();
 }
 
 chatInput.onkeydown = function(event) {
   if (event.keyCode === 13 && chatInput.value.trim() !== '') {
-    const data = userData;
-    data.text = chatInput.value;
-    data.img = document.querySelector('#img').src;
-
-    createMessage(data, true);
-    chatInput.value = '';
+    sendMessage();
   }
 }
 
@@ -65,17 +55,32 @@ socket.on('message', (data) => {
 function createMessage(data, mine = false) {
   const newMessage = document.createElement('div');
   newMessage.classList.add('chat-new-message');
+
   if (mine) {
     newMessage.classList.add('chat-new-message__mine');
+  } else {
+    const newMessageImg = document.createElement('img');
+    newMessageImg.src = data.img;
+    newMessage.appendChild(newMessageImg);
   }
   
   const newMessageP = document.createElement('p');
   newMessageP.innerText = data.text;
 
-  const newMessageImg = document.createElement('img');
-  newMessageImg.src = data.img;
-
-  newMessage.appendChild(newMessageImg);
   newMessage.appendChild(newMessageP);
   chatContainer.appendChild(newMessage);
+}
+
+/**
+ * sendMessage - Sends the message to the server
+ */
+function sendMessage() {
+  const data = userData;
+  data.text = chatInput.value.trim();
+  data.img = document.querySelector('#img').src;
+  data.date = new Date();
+
+  socket.emit('message', data);
+  createMessage(data, true);
+  chatInput.value = '';
 }
