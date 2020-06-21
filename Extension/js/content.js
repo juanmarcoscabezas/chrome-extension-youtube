@@ -2,7 +2,7 @@ chrome.runtime.sendMessage({todo: "color"});
 chrome.runtime.sendMessage({todo: "activate_icon"});
 
 // Connect to socket
-const socket = io('http://3.12.74.191:3000');
+const socket = io('https://3.12.74.191:3000', {secure: true});
 
 // Creating chat container
 const chatContainer = document.createElement('div');
