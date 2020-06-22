@@ -8,12 +8,12 @@ ST = Ohio
 L = Columbia
 O = JuanMarcos SA
 OU = Development 
-CN = www.localhost.com
+CN = www.3.12.74.191.com
 [v3_req]
 keyUsage = critical, digitalSignature, keyAgreement
 extendedKeyUsage = serverAuth
 subjectAltName = @alt_names
 [alt_names]
-DNS.1 = www.localhost.com
-DNS.2 = localhost.com
-DNS.3 = localhost
+DNS.1 = www.3.12.74.191.com
+DNS.2 = 3.12.74.191.com
+DNS.3 = 3.12.74.191
