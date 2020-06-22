@@ -9,8 +9,12 @@ app.get('/', (req, res) => {
 });
 
 const options = {
-	key: fs.readFileSync(__dirname + '/security/cert.key'),
-	cert: fs.readFileSync(__dirname + '/security/cert.pem')
+	//key: fs.readFileSync(__dirname + '/security/cert.key'),
+	//cert: fs.readFileSync(__dirname + '/security/cert.pem')
+	key: fs.readFileSync(__dirname + '/certbot/privkey.pem'),
+	cert: fs.readFileSync(__dirname + '/certbot/cert.pem'),
+	ca: fs.readFileSync(__dirname + '/certbot/chain.pem')
+
 };
 
 const server = https.createServer(options, app);
